@@ -109,6 +109,10 @@
             outline: none; font-family: 'Orbitron', monospace; font-weight: 900; letter-spacing: 4px;
         }
         .warp-label { color: #555; font-size: 12px; margin-top: 15px; letter-spacing: 3px; text-transform: uppercase; }
+        .warp-btn-container { display: flex; gap: 20px; margin-top: 30px; }
+        .warp-btn-container .btn { padding: 10px 30px; font-size: 14px; }
+        #warp-submit-btn { border-color: var(--neon-blue); color: var(--neon-blue); }
+        #warp-exit-btn { border-color: #555; color: #888; }
 
         #victory-screen {
             position: fixed; inset: 0; background: #fff; display: none; z-index: 4000;

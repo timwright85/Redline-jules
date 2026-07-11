@@ -127,6 +127,32 @@ function setupInteractions() {
         location.reload();
     });
 
+    // Warp Console Buttons
+    const warpSubmit = document.getElementById('warp-submit-btn');
+    const warpExit = document.getElementById('warp-exit-btn');
+
+    warpSubmit.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleWarpConsole();
+    });
+    warpExit.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleWarpConsole(true);
+    });
+
+    // For mobile touch, we use touchstart but must prevent default if we don't want click to fire too.
+    // However, the existing mobile buttons in ui.js don't all preventDefault.
+    // To be safe and avoid double-firing, let's just use click as it's generally supported.
+    // If touch latency is an issue, we can add touchstart and preventDefault.
+    warpSubmit.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        toggleWarpConsole();
+    });
+    warpExit.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        toggleWarpConsole(true);
+    });
+
     async function startGameSequence() {
         await Tone.start();
         initAudioEngine();

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>REDLINE</title>
+    <link rel="icon" type="image/jpeg" href="b3.jpeg">
+
+    <!-- External Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/PointerLockControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/RGBShiftShader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="crt-overlay"></div>
+    <div id="slow-mo-overlay"></div>
+
+    <div id="menu">
+        <div class="glitch-wrapper">
+            <h1 class="glitch-title" data-text="REDLINE">REDLINE</h1>
+        </div>
+        <div class="subtitle">ULTIMATE PROTOCOL v0.2</div>
+        <div style="font-size: 10px; color: #888; text-align: center; margin-bottom: 20px;">LATEST: Fixed Dash applying local physics, removed multi-touch blocking on buttons, reduced dash cooldown.</div>
+        <div class="subtitle" id="menu-tokens" style="font-size: 1.2em; color: var(--neon-blue); border: none;">TOTAL TOKENS: 0</div>
+
+        <div class="controls-desc">
+            [<span>W</span><span>A</span><span>S</span><span>D</span>] MOVE AROUND THE GRID &nbsp;|&nbsp; [<span>SHIFT</span>] DASH<br>
+            [<span>SPACE</span>] JUMP &nbsp;|&nbsp; [<span>LEFT-CLICK</span>] SHOOT<br>
+            [<span>RIGHT-CLICK</span>] SCOPE &nbsp;|&nbsp; [<span>ENTER</span>] CHEATS
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <button class="btn" id="start-btn">ENGAGE</button>
+            <button class="btn" id="hard-mode-btn" style="display: none; border-color: var(--neon-orange); color: var(--neon-orange);">START HARD MODE</button>
+        </div>
+        <div style="margin-top: 20px;">
+            <button class="btn" id="skip-credits-btn" style="display: none; font-size: 12px; padding: 10px 30px;">SKIP TO CREDITS</button>
+        </div>
+    </div>
+
+    <div id="warp-overlay">
+        <input type="text" id="warp-input" maxlength="12" autocomplete="off" placeholder="WAVE_ID">
+        <div class="warp-label">INPUT WAVE CODE (WAVE1 - WAVE50) OR "SLOW" AND CONFIRM WITH ENTER</div>
+    </div>
+
+    <div id="victory-screen">
+        <div id="credits-container">
+            <p style="color:#ff003c; font-size:2.5rem; margin-bottom:40px;">PROTOCOL TERMINATED</p>
+            <p>Coder: Jameson Wright</p>
+            <p>Music Creator: Lincoln Callahan</p>
+            <p style="margin-top:50px; color:#fff; font-size:0.8rem;">THANK YOU For Playing</p>
+        </div>
+        <button class="btn" id="reboot-btn">RETURN TO HOME SCREEN</button>
+    </div>
+
+    <div id="ui-layer">
+        <div class="hud-row">
+            <div class="stat-box">
+                <div class="label">TOKENS</div>
+                <div class="value" id="hud-score">000000</div>
+            </div>
+            <div class="stat-box blue-variant">
+                <div class="value" id="hud-wave">WAVE 01</div>
+            </div>
+        </div>
+        
+        <div id="crosshair-wrapper">
+            <div id="reticle-dot"></div>
+            <div id="reticle-ring"></div>
+        </div>
+
+        <div class="hud-row-bottom">
+            <div class="stat-box blue-variant">
+                <div class="label">DASH</div>
+                <div id="dash-container"><div id="dash-bar"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Controls Overlay -->
+    <div id="mobile-controls">
+        <div class="mobile-btn" id="btn-cheat" style="top: 20px; left: 20px; width: 40px; height: 40px; font-size: 8px;">WARP</div>
+
+        <div class="joystick-zone" id="joystick-left">
+            <div class="joystick-knob" id="joystick-knob-left"></div>
+        </div>
+
+        <div class="joystick-zone" id="joystick-right">
+            <div class="joystick-knob" id="joystick-knob-right"></div>
+        </div>
+
+        <div class="mobile-btn" id="btn-jump">JUMP</div>
+        <div class="mobile-btn" id="btn-dash">DASH</div>
+        <div class="mobile-btn" id="btn-scope">SCOPE</div>
+        <div class="mobile-btn" id="btn-shoot">SHOOT</div>
+    </div>
+
+    <!-- Custom Game Scripts -->
+    <script src="js/state.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/entities.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/physics.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

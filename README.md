@@ -1,6 +1,4 @@
-# REDLINE
-
-Click [here](https://timwright85.github.io/Redline-jules/Redline.html) to play REDLINE!
+# Click [HERE](https://timwright85.github.io/Redline-jules/Redline.html) to play REDLINE!
 
 REDLINE is a fast-paced, 3D web-based arena shooter built with **Three.js** and **Tone.js**. It features a retro-futuristic neon aesthetic, wave-based combat, and a dynamic difficulty system.
 

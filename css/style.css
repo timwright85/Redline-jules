@@ -75,15 +75,16 @@
         }
         .glitch-wrapper { position: relative; display: inline-block; margin-bottom: 20px; }
         h1.glitch-title {
-            font-size: 100px; font-weight: 900; color: #fff; margin: 0; line-height: 0.9;
+            font-size: 100px; font-weight: 900; color: var(--neon-red); margin: 0; line-height: 0.9;
             text-transform: uppercase; font-style: italic; letter-spacing: -4px;
-            position: relative; z-index: 1; text-shadow: 5px 5px 0px var(--neon-red);
+            position: relative; z-index: 1;
         }
         h1.glitch-title::before, h1.glitch-title::after {
-            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000;
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: transparent; color: transparent;
         }
-        h1.glitch-title::before { left: 3px; text-shadow: -3px 0 var(--neon-blue); clip: rect(40px, 600px, 65px, 0); animation: glitch-1 4s infinite linear alternate-reverse; }
-        h1.glitch-title::after { left: -3px; text-shadow: -3px 0 #ff00ff; clip: rect(10px, 600px, 35px, 0); animation: glitch-2 3s infinite linear alternate-reverse; }
+        h1.glitch-title::before { left: 3px; text-shadow: 2px 0 var(--neon-blue); clip: rect(40px, 600px, 65px, 0); animation: glitch-1 4s infinite linear alternate-reverse; }
+        h1.glitch-title::after { left: -3px; text-shadow: -2px 0 #ff00ff; clip: rect(10px, 600px, 35px, 0); animation: glitch-2 3s infinite linear alternate-reverse; }
 
         @keyframes glitch-1 { 0% { clip: rect(20px, 9999px, 40px, 0); transform: skew(1deg); } 100% { clip: rect(80px, 9999px, 110px, 0); transform: skew(-1deg); } }
         @keyframes glitch-2 { 0% { clip: rect(70px, 9999px, 90px, 0); transform: skew(-0.5deg); } 100% { clip: rect(5px, 9999px, 30px, 0); transform: skew(1.5deg); } }

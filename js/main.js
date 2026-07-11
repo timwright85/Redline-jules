@@ -293,8 +293,8 @@ function animateLoop() {
 
         if (STATE.dashCooldown > 0) {
             STATE.dashCooldown -= delta * 1000.0;
-            // HUD width linearly interpolates back to 100% based on new 300ms cooldown max
-            document.getElementById('dash-bar').style.width = `${(1.0 - Math.max(0, STATE.dashCooldown / 300.0)) * 100}%`;
+            // HUD width linearly interpolates back to 100% based on configured cooldown max
+            document.getElementById('dash-bar').style.width = `${(1.0 - Math.max(0, STATE.dashCooldown / CONFIG.DASH_COOLDOWN)) * 100}%`;
         } else {
             document.getElementById('dash-bar').style.width = '100%';
         }

@@ -177,6 +177,7 @@ function setupInteractions() {
         if (!STATE.gameBeaten && document.getElementById('warp-overlay').style.display !== 'flex' && !STATE.isMobile) {
             document.getElementById('menu').style.display = 'flex';
             STATE.gameActive = false;
+            checkForUpdates();
         }
     });
 

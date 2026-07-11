@@ -12,7 +12,8 @@ const CONFIG = {
     FRICTION: 8.5,
     GRAVITY: 52.0,
     BOUNDS: 230,
-    AUDIO_PITCHES: [110, 130, 165, 196, 220, 261, 329, 392]
+    AUDIO_PITCHES: [110, 130, 165, 196, 220, 261, 329, 392],
+    VERSION: "0.5"
 };
 
 /**

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Run the version update script
+python3 tools/update_version.py
+
+# Add the auto-generated file to the commit
+git add js/version.js

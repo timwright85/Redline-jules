@@ -5,6 +5,14 @@
 window.onload = () => {
     loadGameState(); // load tokens and status from local storage
 
+    // Update version display
+    if (typeof GAME_VERSION !== 'undefined') {
+        document.getElementById('game-version').innerText = "ULTIMATE PROTOCOL " + GAME_VERSION;
+    }
+    if (typeof LATEST_CHANGE !== 'undefined') {
+        document.getElementById('game-latest-msg').innerText = "LATEST: " + LATEST_CHANGE;
+    }
+
     // Update main menu tokens display
     const tokensDisplay = document.getElementById('menu-tokens');
     if (tokensDisplay) {

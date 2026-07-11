@@ -227,3 +227,60 @@
     .controls-desc { display: none; } /* Hide descriptions to save space */
     #menu { padding-top: 10px; padding-bottom: 10px; justify-content: flex-start; overflow-y: auto; }
 }
+
+/* ==========================================
+   UPDATE NOTIFICATION BANNER
+   ========================================== */
+#update-notification {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ff4757;
+    color: white;
+    text-align: center;
+    padding: 12px 20px;
+    z-index: 10000;
+    font-weight: 900;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+#update-notification span {
+    margin-right: 20px;
+}
+
+.refresh-btn {
+    background: white;
+    color: #ff4757;
+    border: none;
+    padding: 6px 18px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.2s;
+}
+
+.refresh-btn:hover {
+    background: #f1f1f1;
+    transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+    #update-notification {
+        flex-direction: column;
+        font-size: 12px;
+        padding: 10px;
+    }
+    #update-notification span {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}

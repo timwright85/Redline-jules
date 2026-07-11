@@ -48,6 +48,7 @@ function displayScreenFloatingText(text, hexColor) {
 }
 
 function triggerGrandVictoryProtocol() {
+    checkForUpdates();
     STATE.gameBeaten = true;
     STATE.gameActive = false;
 
@@ -99,6 +100,7 @@ function toggleWarpConsole(isCancel = false) {
         if (!STATE.isMobile) controls.unlock();
         overlay.style.display = 'flex';
         setTimeout(() => input.focus(), 50);
+        checkForUpdates();
     }
 }
 
@@ -246,4 +248,45 @@ function setupMobileControls() {
     btnScope.addEventListener('touchstart', (e) => { engageOpticsZoom(true); });
     btnScope.addEventListener('touchend', (e) => { engageOpticsZoom(false); });
     btnShoot.addEventListener('touchstart', (e) => { if(STATE.gameActive && !STATE.gameBeaten) emitWeaponDischarge(); });
+}
+
+// ==========================================
+// LIVE UPDATE SYSTEM
+// ==========================================
+
+/**
+ * checkForUpdates
+ * Fetches the version.json file with a cache-busting timestamp.
+ * Compares the fetched version with the hardcoded CONFIG.VERSION.
+ * If they differ, it triggers the update notification banner.
+ */
+async function checkForUpdates() {
+    try {
+        const response = await fetch('./version.json?t=' + Date.now());
+        if (!response.ok) return;
+        const data = await response.json();
+
+        if (data.version && data.version !== CONFIG.VERSION) {
+            showUpdateBanner();
+        }
+    } catch (err) {
+        // Silent failure as per requirements
+    }
+}
+
+/**
+ * showUpdateBanner
+ * Dynamically injects a notification banner into the DOM.
+ * Only one banner will be created.
+ */
+function showUpdateBanner() {
+    if (document.getElementById('update-notification')) return;
+
+    const banner = document.createElement('div');
+    banner.id = 'update-notification';
+    banner.innerHTML = `
+        <span>A new update is available!</span>
+        <button class="refresh-btn" onclick="window.location.reload()">Refresh Game</button>
+    `;
+    document.body.appendChild(banner);
 }

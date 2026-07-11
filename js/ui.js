@@ -74,27 +74,29 @@ function engageOpticsZoom(active) {
     ring.style.height = active ? '20px' : '36px';
 }
 
-function toggleWarpConsole() {
+function toggleWarpConsole(isCancel = false) {
     const overlay = document.getElementById('warp-overlay'), input = document.getElementById('warp-input');
     if (overlay.style.display === 'flex') {
-        const cmd = input.value.trim().toUpperCase();
-        if (cmd.startsWith("WAVE")) {
-            const extractedNum = parseInt(cmd.replace("WAVE", ""));
-            if (!isNaN(extractedNum) && extractedNum >= 1 && extractedNum <= 50) {
-                clearActiveTargets();
-                if(activeCoin) { scene.remove(activeCoin); activeCoin = null; }
-                STATE.currentWave = extractedNum;
-                executeDeploymentWave();
+        if (!isCancel) {
+            const cmd = input.value.trim().toUpperCase();
+            if (cmd.startsWith("WAVE")) {
+                const extractedNum = parseInt(cmd.replace("WAVE", ""));
+                if (!isNaN(extractedNum) && extractedNum >= 1 && extractedNum <= 50) {
+                    clearActiveTargets();
+                    if(activeCoin) { scene.remove(activeCoin); activeCoin = null; }
+                    STATE.currentWave = extractedNum;
+                    executeDeploymentWave();
+                }
+            } else if (cmd === "SLOW") {
+                STATE.slowMoActive = !STATE.slowMoActive;
+                document.getElementById('slow-mo-overlay').style.opacity = STATE.slowMoActive ? 1 : 0;
             }
-        } else if (cmd === "SLOW") {
-            STATE.slowMoActive = !STATE.slowMoActive;
-            document.getElementById('slow-mo-overlay').style.opacity = STATE.slowMoActive ? 1 : 0;
         }
         input.value = "";
         overlay.style.display = 'none';
-        controls.lock();
+        if (!STATE.isMobile) controls.lock();
     } else {
-        controls.unlock();
+        if (!STATE.isMobile) controls.unlock();
         overlay.style.display = 'flex';
         setTimeout(() => input.focus(), 50);
     }

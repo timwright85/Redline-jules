@@ -1,6 +1,7 @@
 :root {
             --neon-red: #ff003c;
             --neon-blue: #00f2ff;
+            --neon-purple: #df00ff;
             --neon-orange: #ff7f00;
             --neon-green: #00ff66;
             --neon-gold: #ffd700;
@@ -48,9 +49,9 @@
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 90;
         }
-        #reticle-dot { width: 4px; height: 4px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue); }
+        #reticle-dot { width: 6px; height: 6px; background: var(--neon-purple); border-radius: 50%; box-shadow: 0 0 15px var(--neon-purple); }
         #reticle-ring {
-            position: absolute; width: 36px; height: 36px; border: 1px solid rgba(0, 242, 255, 0.6);
+            position: absolute; width: 36px; height: 36px; border: 2px solid rgba(223, 0, 255, 0.8);
             transform: rotate(45deg); transition: transform 0.1s ease-out, width 0.1s, height 0.1s;
         }
 

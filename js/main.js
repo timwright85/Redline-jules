@@ -7,10 +7,12 @@ window.onload = () => {
 
     // Update version display
     if (typeof GAME_VERSION !== 'undefined') {
-        document.getElementById('game-version').innerText = "ULTIMATE PROTOCOL " + GAME_VERSION;
+        const versionEl = document.getElementById('game-version');
+        if (versionEl) versionEl.innerText = "ULTIMATE PROTOCOL " + GAME_VERSION;
     }
     if (typeof LATEST_CHANGE !== 'undefined') {
-        document.getElementById('game-latest-msg').innerText = "LATEST: " + LATEST_CHANGE;
+        const latestEl = document.getElementById('game-latest-msg');
+        if (latestEl) latestEl.innerText = "LATEST: " + LATEST_CHANGE;
     }
 
     // Update main menu tokens display

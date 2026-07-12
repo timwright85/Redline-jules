@@ -26,11 +26,8 @@ window.onload = () => {
         document.getElementById('hard-mode-btn').style.display = 'inline-block';
     }
 
-    // Show skip to credits if they've beaten wave 25 before (approx 2.5m tokens, or save it explicitly)
-    // For now, if tokens are high enough to be at wave 25 logically, or let's use localStorage flag.
-    if (localStorage.getItem('redline_wave25_beaten') === 'true') {
-        document.getElementById('skip-credits-btn').style.display = 'inline-block';
-    }
+    // Show skip to credits button by default on home screen as requested.
+    document.getElementById('skip-credits-btn').style.display = 'inline-block';
 
     initRenderCore();
     initEnvironmentSpace();

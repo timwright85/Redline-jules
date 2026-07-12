@@ -263,6 +263,7 @@ function setupMobileControls() {
     const btnScope = document.getElementById('btn-scope');
     const btnShoot = document.getElementById('btn-shoot');
     const btnCheat = document.getElementById('btn-cheat');
+    const btnHome = document.getElementById('btn-home');
 
     // Removed e.preventDefault() on action buttons to prevent them from blocking concurrent multi-touch events
     // across the screen (like dragging the joystick while scoping).
@@ -272,6 +273,16 @@ function setupMobileControls() {
     btnScope.addEventListener('touchstart', (e) => { engageOpticsZoom(true); });
     btnScope.addEventListener('touchend', (e) => { engageOpticsZoom(false); });
     btnShoot.addEventListener('touchstart', (e) => { if(STATE.gameActive && !STATE.gameBeaten) emitWeaponDischarge(); });
+
+    if (btnHome) {
+        btnHome.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            STATE.gameActive = false;
+            document.getElementById('mobile-controls').style.display = 'none';
+            document.getElementById('menu').style.display = 'flex';
+            checkForUpdates();
+        });
+    }
 }
 
 // ==========================================

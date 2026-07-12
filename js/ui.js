@@ -287,45 +287,60 @@ async function populateCreditsAndChangelog() {
     const container = document.getElementById('credits-container');
     if (!container) return;
 
+    console.log("Populating credits and changelog...");
+
     try {
-        const response = await fetch('./changelog.json?t=' + Date.now());
-        if (!response.ok) throw new Error("Failed to load changelog");
+        // Use version.json as primary source of truth as it now contains full history/credits
+        const response = await fetch('./version.json?t=' + Date.now());
+        if (!response.ok) throw new Error("Failed to load version data");
         const data = await response.json();
 
         let html = `<p style="color:#ff003c; font-size:2.5rem; margin-bottom:40px;">PROTOCOL TERMINATED</p>`;
 
         // Add Credits
-        if (data.credits) {
+        if (data.credits && Array.isArray(data.credits)) {
             data.credits.forEach(c => {
                 html += `<p>${c.role}: ${c.name}</p>`;
             });
+        } else {
+            html += `<p>Coder: Jameson Wright</p><p>Music Creator: Lincoln Callahan</p>`;
         }
 
         html += `<p style="margin-top:50px; color:#fff; font-size:1.2rem;">SYSTEM LOGS</p>`;
         html += `<div id="changelog-list">`;
 
         // Add History
-        if (data.history) {
+        if (data.history && Array.isArray(data.history)) {
             data.history.forEach(h => {
                 html += `
                     <div class="changelog-item">
                         <div class="changelog-header">
-                            <span class="changelog-hash">${h.hash}</span>
-                            <span class="changelog-title">${h.title}</span>
+                            <span class="changelog-hash">${h.hash || '---'}</span>
+                            <span class="changelog-title">${h.title || 'Update'}</span>
                         </div>
                         ${h.body ? `<div class="changelog-body">${h.body.replace(/\n/g, '<br>')}</div>` : ''}
                     </div>
                 `;
             });
+        } else {
+            html += `<p style="color:#666;">No history records found.</p>`;
         }
 
         html += `</div>`;
         html += `<p style="margin-top:50px; color:#fff; font-size:0.8rem;">THANK YOU FOR PLAYING</p>`;
 
         container.innerHTML = html;
+        console.log("Credits and changelog populated successfully.");
     } catch (err) {
         console.error("Credits Error:", err);
-        container.innerHTML = `<p style="color:#ff003c;">ERROR LOADING PROTOCOL DATA</p>`;
+        // Fallback content in case of error
+        container.innerHTML = `
+            <p style="color:#ff003c; font-size:2.5rem; margin-bottom:40px;">PROTOCOL TERMINATED</p>
+            <p>Coder: Jameson Wright</p>
+            <p>Music Creator: Lincoln Callahan</p>
+            <p style="margin-top:50px; color:#ff003c;">ERROR CONNECTING TO ARCHIVE</p>
+            <p style="font-size: 0.8rem; color: #555;">${err.message}</p>
+        `;
     }
 }
 

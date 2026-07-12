@@ -46,20 +46,40 @@ def get_changelog():
 
 def get_latest_commit_message():
     try:
-        return subprocess.check_output(['git', 'log', '-1', '--pretty=%s']).decode('utf-8').strip()
+        # Get the 5 most recent commits to find a descriptive one
+        log_output = subprocess.check_output([
+            'git', 'log', '-5', '--pretty=format:%s|%b<END_OF_COMMIT>'
+        ]).decode('utf-8').strip()
+
+        for entry in log_output.split('<END_OF_COMMIT>'):
+            if not entry.strip(): continue
+            parts = entry.strip().split('|', 1)
+            title = parts[0].strip()
+            body = parts[1].strip() if len(parts) > 1 else ""
+
+            # Skip generic merge messages or "per commit #" style messages
+            if title.startswith("Merge ") or "commit #" in title.lower():
+                if body and not body.startswith("Merge ") and "commit #" not in body.lower():
+                    return body.split('\n')[0] # Use first line of body if it's better
+                continue
+
+            if title:
+                return title
+
+        return "Stability and performance improvements"
     except Exception:
         return "Initial release"
 
 def update_version():
     if not os.path.exists('VERSION'):
         with open('VERSION', 'w') as f:
-            f.write('0.5')
+            f.write('0.6')
 
     with open('VERSION', 'r') as f:
         base_version = f.read().strip()
 
-    rev_count = get_git_revision_count()
-    version = f"v{base_version}.{rev_count}"
+    # Sticky 2-number versioning as requested (e.g. v0.6)
+    version = f"v{base_version}"
     latest_msg = get_latest_commit_message()
 
     # JS version file
@@ -79,10 +99,6 @@ if (typeof window !== 'undefined') {{
     with open('js/version.js', 'w') as f:
         f.write(content)
 
-    # version.json for update checking
-    with open('version.json', 'w') as f:
-        json.dump({"version": version}, f, indent=2)
-
     # changelog.json
     changelog_data = {
         "credits": [
@@ -93,6 +109,16 @@ if (typeof window !== 'undefined') {{
     }
     with open('changelog.json', 'w') as f:
         json.dump(changelog_data, f, indent=2)
+
+    # version.json for update checking and full recall
+    # Includes version string and full changelog/credits data
+    with open('version.json', 'w') as f:
+        json.dump({
+            "version": version,
+            "latest_msg": latest_msg,
+            "credits": changelog_data["credits"],
+            "history": changelog_data["history"]
+        }, f, indent=2)
 
     print(f"Updated versioning files to {version}")
 

@@ -36,6 +36,12 @@ window.onload = () => {
     initEnvironmentSpace();
     setupInteractions();
     setupMobileControls();
+
+    // Pre-fetch credits and changelog data
+    if (typeof populateCreditsAndChangelog === 'function') {
+        populateCreditsAndChangelog();
+    }
+
     animateLoop();
 };
 

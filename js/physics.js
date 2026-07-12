@@ -108,7 +108,9 @@ function emitWeaponDischarge() {
             if(data.type === 'ghost') explodeColor = 0xffff00;
             if(data.type === 'swarm') explodeColor = 0xff00ff;
             if(data.type === 'tank') explodeColor = 0x8a2be2;
-            if(data.type === 'tesseract') explodeColor = 0x00ff66;
+            if(data.type === 'tesseract') explodeColor = 0xff7f00;
+            if(data.type === 'miniboss') explodeColor = 0x00ff66;
+            if(data.type === 'normalboss') explodeColor = 0xff00ff;
 
             // Trigger explosion logic. Invert colors if we are in hard mode context.
             triggerFractureExplosion(rootHit.position, getHexColor(explodeColor));

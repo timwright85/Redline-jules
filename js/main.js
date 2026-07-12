@@ -338,6 +338,9 @@ function animateLoop() {
         // Calculate 3D distance, but we also care about XZ overlap for player collision
         const distance = camera.position.distanceTo(t.position);
 
+        // Calculate rubber-band attraction factor: slow when close, fast when far.
+        const attraction = data.isBoss ? 1.0 : Math.max(0.05, (distance - 40) / 100.0);
+
         // --- PLAYER COLLISION ---
         // Establish collision radius based on enemy type
         let colRadius = 5.0; // default for swarm, standard, dasher, ghost
@@ -363,12 +366,12 @@ function animateLoop() {
             const pushZ = dz / planarDist;
 
             // Push the camera strictly in world coordinates so bounce is always outward from the enemy
-            camera.position.x += pushX * overlap * 0.5;
-            camera.position.z += pushZ * overlap * 0.5;
+            camera.position.x += pushX * overlap * 0.15;
+            camera.position.z += pushZ * overlap * 0.15;
 
             // Push the enemy away slightly in the opposite direction
-            t.position.x -= pushX * overlap * 0.5;
-            t.position.z -= pushZ * overlap * 0.5;
+            t.position.x -= pushX * overlap * 0.85;
+            t.position.z -= pushZ * overlap * 0.85;
 
             // Zero out local velocity to prevent sliding back in during the same frame
             STATE.velocity.x = 0;
@@ -432,22 +435,21 @@ function animateLoop() {
             }
 
             if (!data.isPhasedOut) {
-                t.position.addScaledVector(trackingVector, data.driftSpeed * 22.0 * dt);
+                t.position.addScaledVector(trackingVector, data.driftSpeed * 22.0 * dt * attraction);
             }
         }
         else {
             if (data.type === 'ghost') {
-                t.position.addScaledVector(trackingVector, 7.5 * dt);
+                t.position.addScaledVector(trackingVector, 7.5 * dt * attraction);
                 t.position.x += Math.sin(time * 0.003 + data.offset) * 0.22;
                 t.position.y = 2.0 + Math.cos(time * 0.003 + data.offset) * 1.8;
             }
             else if (data.type === 'dasher') {
                 let factor = data.driftSpeed * 45.0;
-                if (distance < 85) factor *= 2.6;
-                t.position.addScaledVector(trackingVector, factor * dt);
+                t.position.addScaledVector(trackingVector, factor * dt * attraction);
             }
             else {
-                t.position.addScaledVector(trackingVector, data.driftSpeed * 42.0 * dt);
+                t.position.addScaledVector(trackingVector, data.driftSpeed * 42.0 * dt * attraction);
             }
         }
     });

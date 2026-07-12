@@ -1,3 +1,21 @@
 {
-  "version": "v0.5.1"
+  "version": "v0.6",
+  "latest_msg": "Feature: Versioning Improvement and Detailed Credit Changelog",
+  "credits": [
+    {
+      "role": "Coder",
+      "name": "Jameson Wright"
+    },
+    {
+      "role": "Music Creator",
+      "name": "Lincoln Callahan"
+    }
+  ],
+  "history": [
+    {
+      "hash": "154af1a",
+      "title": "Merge pull request #24 from timwright85/feature-update-changelog-4545661061704743147",
+      "body": "Feature: Versioning Improvement and Detailed Credit Changelog"
+    }
+  ]
 }

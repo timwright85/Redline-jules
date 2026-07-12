@@ -11,14 +11,9 @@
   ],
   "history": [
     {
-      "hash": "04cff51",
-      "title": "Merge pull request #19 from timwright85/revert-title-style-16667978206103500909",
-      "body": "Revert Title Style to White with Red Shadow"
-    },
-    {
-      "hash": "94dab02",
-      "title": "Merge branch 'main' into revert-title-style-16667978206103500909",
-      "body": ""
+      "hash": "154af1a",
+      "title": "Merge pull request #24 from timwright85/feature-update-changelog-4545661061704743147",
+      "body": "Feature: Versioning Improvement and Detailed Credit Changelog"
     }
   ]
 }

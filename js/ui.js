@@ -52,6 +52,9 @@ function triggerGrandVictoryProtocol() {
     STATE.gameBeaten = true;
     STATE.gameActive = false;
 
+    // Populate credits and changelog before showing them
+    populateCreditsAndChangelog();
+
     // Hide mobile controls
     document.getElementById('mobile-controls').style.display = 'none';
 
@@ -257,7 +260,7 @@ function setupMobileControls() {
 /**
  * checkForUpdates
  * Fetches the version.json file with a cache-busting timestamp.
- * Compares the fetched version with the hardcoded CONFIG.VERSION.
+ * Compares the fetched version with the global GAME_VERSION.
  * If they differ, it triggers the update notification banner.
  */
 async function checkForUpdates() {
@@ -266,11 +269,63 @@ async function checkForUpdates() {
         if (!response.ok) return;
         const data = await response.json();
 
-        if (data.version && data.version !== CONFIG.VERSION) {
+        const currentVersion = typeof GAME_VERSION !== 'undefined' ? GAME_VERSION : 'v0.5';
+
+        if (data.version && data.version !== currentVersion) {
             showUpdateBanner();
         }
     } catch (err) {
         // Silent failure as per requirements
+    }
+}
+
+/**
+ * populateCreditsAndChangelog
+ * Fetches changelog.json and builds the visual list of credits and history.
+ */
+async function populateCreditsAndChangelog() {
+    const container = document.getElementById('credits-container');
+    if (!container) return;
+
+    try {
+        const response = await fetch('./changelog.json?t=' + Date.now());
+        if (!response.ok) throw new Error("Failed to load changelog");
+        const data = await response.json();
+
+        let html = `<p style="color:#ff003c; font-size:2.5rem; margin-bottom:40px;">PROTOCOL TERMINATED</p>`;
+
+        // Add Credits
+        if (data.credits) {
+            data.credits.forEach(c => {
+                html += `<p>${c.role}: ${c.name}</p>`;
+            });
+        }
+
+        html += `<p style="margin-top:50px; color:#fff; font-size:1.2rem;">SYSTEM LOGS</p>`;
+        html += `<div id="changelog-list">`;
+
+        // Add History
+        if (data.history) {
+            data.history.forEach(h => {
+                html += `
+                    <div class="changelog-item">
+                        <div class="changelog-header">
+                            <span class="changelog-hash">${h.hash}</span>
+                            <span class="changelog-title">${h.title}</span>
+                        </div>
+                        ${h.body ? `<div class="changelog-body">${h.body.replace(/\n/g, '<br>')}</div>` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        html += `</div>`;
+        html += `<p style="margin-top:50px; color:#fff; font-size:0.8rem;">THANK YOU FOR PLAYING</p>`;
+
+        container.innerHTML = html;
+    } catch (err) {
+        console.error("Credits Error:", err);
+        container.innerHTML = `<p style="color:#ff003c;">ERROR LOADING PROTOCOL DATA</p>`;
     }
 }
 

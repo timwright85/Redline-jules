@@ -1,0 +1,24 @@
+{
+  "credits": [
+    {
+      "role": "Coder",
+      "name": "Jameson Wright"
+    },
+    {
+      "role": "Music Creator",
+      "name": "Lincoln Callahan"
+    }
+  ],
+  "history": [
+    {
+      "hash": "04cff51",
+      "title": "Merge pull request #19 from timwright85/revert-title-style-16667978206103500909",
+      "body": "Revert Title Style to White with Red Shadow"
+    },
+    {
+      "hash": "94dab02",
+      "title": "Merge branch 'main' into revert-title-style-16667978206103500909",
+      "body": ""
+    }
+  ]
+}

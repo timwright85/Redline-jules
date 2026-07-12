@@ -158,10 +158,13 @@ function setupMobileControls() {
         for (let i = 0; i < e.changedTouches.length; i++) {
             let t = e.changedTouches[i];
 
+            let isJoystickTouch = false;
+
             // Check left joystick tap location
             if (t.clientX >= leftJoyRect.left && t.clientX <= leftJoyRect.right &&
                 t.clientY >= leftJoyRect.top && t.clientY <= leftJoyRect.bottom) {
                 leftJoystickTouchId = t.identifier;
+                isJoystickTouch = true;
             }
             // Check right joystick tap location
             else if (t.clientX >= rightJoyRect.left && t.clientX <= rightJoyRect.right &&
@@ -169,6 +172,23 @@ function setupMobileControls() {
                 rightJoystickTouchId = t.identifier;
                 lastTouchX = t.clientX;
                 lastTouchY = t.clientY;
+                isJoystickTouch = true;
+            }
+
+            // Tap to shoot logic: if not a joystick touch and not hitting a button
+            if (!isJoystickTouch) {
+                const target = t.target;
+                const isUI = target.classList.contains('mobile-btn') ||
+                             target.classList.contains('btn') ||
+                             target.tagName === 'BUTTON' ||
+                             target.tagName === 'INPUT' ||
+                             (target.closest && (target.closest('#warp-overlay') || target.closest('.btn') || target.closest('.mobile-btn')));
+
+                if (!isUI && STATE.gameActive && !STATE.gameBeaten) {
+                    // preventDefault here avoids double-firing with mousedown on some mobile browsers
+                    e.preventDefault();
+                    emitWeaponDischarge();
+                }
             }
         }
     }, {passive: false});
@@ -197,10 +217,10 @@ function setupMobileControls() {
                 leftKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
 
                 // Map mathematical drag output to logical WASD input state
-                STATE.input.w = dy < -20 ? 1 : 0;
-                STATE.input.s = dy > 20 ? 1 : 0;
-                STATE.input.a = dx < -20 ? 1 : 0;
-                STATE.input.d = dx > 20 ? 1 : 0;
+                STATE.input.w = dy < -25 ? 1 : 0;
+                STATE.input.s = dy > 25 ? 1 : 0;
+                STATE.input.a = dx < -25 ? 1 : 0;
+                STATE.input.d = dx > 25 ? 1 : 0;
             }
             else if (t.identifier === rightJoystickTouchId) {
                 e.preventDefault();
@@ -222,9 +242,9 @@ function setupMobileControls() {
                 rightKnob.style.transform = `translate(calc(-50% + ${kdx}px), calc(-50% + ${kdy}px))`;
 
                 // Set continuous rotation velocity based on joystick displacement relative to center
-                // Normalize it from -1.0 to 1.0 based on maxDist
-                STATE.mobileLookDelta.x = kdx / maxDist;
-                STATE.mobileLookDelta.y = kdy / maxDist;
+                // Normalize it from -1.0 to 1.0 based on maxDist, reduced by 25% for sensitivity
+                STATE.mobileLookDelta.x = (kdx / maxDist) * 0.75;
+                STATE.mobileLookDelta.y = (kdy / maxDist) * 0.75;
             }
         }
     }, {passive: false});

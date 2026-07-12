@@ -13,7 +13,7 @@ const CONFIG = {
     GRAVITY: 52.0,
     BOUNDS: 230,
     AUDIO_PITCHES: [110, 130, 165, 196, 220, 261, 329, 392],
-    VERSION: "0.5"
+    DASH_COOLDOWN: 5000.0
 };
 
 /**

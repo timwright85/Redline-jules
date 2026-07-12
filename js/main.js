@@ -7,10 +7,12 @@ window.onload = () => {
 
     // Update version display
     if (typeof GAME_VERSION !== 'undefined') {
-        document.getElementById('game-version').innerText = "ULTIMATE PROTOCOL " + GAME_VERSION;
+        const versionEl = document.getElementById('game-version');
+        if (versionEl) versionEl.innerText = "ULTIMATE PROTOCOL " + GAME_VERSION;
     }
     if (typeof LATEST_CHANGE !== 'undefined') {
-        document.getElementById('game-latest-msg').innerText = "LATEST: " + LATEST_CHANGE;
+        const latestEl = document.getElementById('game-latest-msg');
+        if (latestEl) latestEl.innerText = "LATEST: " + LATEST_CHANGE;
     }
 
     // Update main menu tokens display
@@ -294,8 +296,8 @@ function animateLoop() {
 
         if (STATE.dashCooldown > 0) {
             STATE.dashCooldown -= delta * 1000.0;
-            // HUD width linearly interpolates back to 100% based on new 300ms cooldown max
-            document.getElementById('dash-bar').style.width = `${(1.0 - Math.max(0, STATE.dashCooldown / 300.0)) * 100}%`;
+            // HUD width linearly interpolates back to 100% based on configured cooldown max
+            document.getElementById('dash-bar').style.width = `${(1.0 - Math.max(0, STATE.dashCooldown / CONFIG.DASH_COOLDOWN)) * 100}%`;
         } else {
             document.getElementById('dash-bar').style.width = '100%';
         }

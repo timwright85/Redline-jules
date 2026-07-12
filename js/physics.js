@@ -38,8 +38,8 @@ function executeVelocityDash() {
     STATE.velocity.x += localX * 450.0;
     STATE.velocity.z += localZ * 450.0;
 
-    // Shorter cooldown so it comes back up to operating speed quickly
-    STATE.dashCooldown = 300; // reduced from 1200ms
+    // Set dash on cooldown
+    STATE.dashCooldown = CONFIG.DASH_COOLDOWN;
 
     // Trigger visual/audio feedback
     document.getElementById('dash-bar').style.width = '0%';

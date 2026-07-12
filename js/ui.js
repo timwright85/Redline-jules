@@ -83,9 +83,10 @@ function toggleWarpConsole(isCancel = false) {
     if (overlay.style.display === 'flex') {
         if (!isCancel) {
             const cmd = input.value.trim().toUpperCase();
-            if (cmd.startsWith("WAVE")) {
-                const extractedNum = parseInt(cmd.replace("WAVE", ""));
-                if (!isNaN(extractedNum) && extractedNum >= 1 && extractedNum <= 50) {
+            const match = cmd.match(/\d+/);
+            if (match) {
+                const extractedNum = parseInt(match[0]);
+                if (extractedNum >= 1 && extractedNum <= 50) {
                     clearActiveTargets();
                     if(activeCoin) { scene.remove(activeCoin); activeCoin = null; }
                     STATE.currentWave = extractedNum;

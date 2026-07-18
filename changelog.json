@@ -11,9 +11,9 @@
   ],
   "history": [
     {
-      "hash": "154af1a",
-      "title": "Merge pull request #24 from timwright85/feature-update-changelog-4545661061704743147",
-      "body": "Feature: Versioning Improvement and Detailed Credit Changelog"
+      "hash": "b7863aa",
+      "title": "Merge pull request #34 from timwright85/fix-miniboss-particles-17231202013254149014",
+      "body": "Corrected Enemy Explosion Particle Colors"
     }
   ]
 }

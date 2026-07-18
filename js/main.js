@@ -102,13 +102,18 @@ function initEnvironmentSpace() {
 }
 
 function setupInteractions() {
-    document.getElementById('start-btn').addEventListener('click', async () => {
+    const handleStartBtn = async (e) => {
+        if (e) e.preventDefault();
         STATE.isHardMode = false;
         requestMobileFullscreen();
         await startGameSequence();
-    });
+    };
+    const startBtn = document.getElementById('start-btn');
+    startBtn.addEventListener('click', handleStartBtn);
+    startBtn.addEventListener('touchstart', handleStartBtn, { passive: false });
 
-    document.getElementById('hard-mode-btn').addEventListener('click', async () => {
+    const handleHardModeBtn = async (e) => {
+        if (e) e.preventDefault();
         STATE.isHardMode = true;
         requestMobileFullscreen();
         // Re-init environment with flipped colors if necessary
@@ -119,26 +124,47 @@ function setupInteractions() {
         scene.remove(ambientLight);
         initEnvironmentSpace();
         await startGameSequence();
-    });
+    };
+    const hardModeBtn = document.getElementById('hard-mode-btn');
+    hardModeBtn.addEventListener('click', handleHardModeBtn);
+    hardModeBtn.addEventListener('touchstart', handleHardModeBtn, { passive: false });
 
     function requestMobileFullscreen() {
         if (STATE.isMobile || ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().catch((err) => console.log(err));
-            } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
-                document.documentElement.webkitRequestFullscreen().catch((err) => console.log(err));
+            try {
+                if (document.documentElement.requestFullscreen) {
+                    const promise = document.documentElement.requestFullscreen();
+                    if (promise && typeof promise.catch === 'function') {
+                        promise.catch((err) => console.log("requestFullscreen failed:", err));
+                    }
+                } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
+                    const promise = document.documentElement.webkitRequestFullscreen();
+                    if (promise && typeof promise.catch === 'function') {
+                        promise.catch((err) => console.log("webkitRequestFullscreen failed:", err));
+                    }
+                }
+            } catch (err) {
+                console.log("Fullscreen request failed safely:", err);
             }
         }
     }
 
-    document.getElementById('skip-credits-btn').addEventListener('click', () => {
+    const handleSkipCreditsBtn = (e) => {
+        if (e) e.preventDefault();
         document.getElementById('menu').style.display = 'none';
         triggerGrandVictoryProtocol();
-    });
+    };
+    const skipCreditsBtn = document.getElementById('skip-credits-btn');
+    skipCreditsBtn.addEventListener('click', handleSkipCreditsBtn);
+    skipCreditsBtn.addEventListener('touchstart', handleSkipCreditsBtn, { passive: false });
 
-    document.getElementById('reboot-btn').addEventListener('click', () => {
+    const handleRebootBtn = (e) => {
+        if (e) e.preventDefault();
         location.reload();
-    });
+    };
+    const rebootBtn = document.getElementById('reboot-btn');
+    rebootBtn.addEventListener('click', handleRebootBtn);
+    rebootBtn.addEventListener('touchstart', handleRebootBtn, { passive: false });
 
     // Warp Console Buttons
     const warpSubmit = document.getElementById('warp-submit-btn');

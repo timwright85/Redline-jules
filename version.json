@@ -1,6 +1,6 @@
 {
-  "version": "v0.6",
-  "latest_msg": "Corrected Enemy Explosion Particle Colors",
+  "version": "v0.7",
+  "latest_msg": "Fix home screen engage button not working on iPad/touch devices",
   "credits": [
     {
       "role": "Coder",
@@ -13,9 +13,9 @@
   ],
   "history": [
     {
-      "hash": "b7863aa",
-      "title": "Merge pull request #34 from timwright85/fix-miniboss-particles-17231202013254149014",
-      "body": "Corrected Enemy Explosion Particle Colors"
+      "hash": "e3b7d3a",
+      "title": "Merge pull request #36 from timwright85/jules-14270794468123007981-9d5b7bdc",
+      "body": "Fix home screen engage button not working on iPad/touch devices"
     }
   ]
 }

@@ -110,7 +110,6 @@ function setupInteractions() {
     };
     const startBtn = document.getElementById('start-btn');
     startBtn.addEventListener('click', handleStartBtn);
-    startBtn.addEventListener('touchstart', handleStartBtn, { passive: false });
 
     const handleHardModeBtn = async (e) => {
         if (e) e.preventDefault();
@@ -127,7 +126,6 @@ function setupInteractions() {
     };
     const hardModeBtn = document.getElementById('hard-mode-btn');
     hardModeBtn.addEventListener('click', handleHardModeBtn);
-    hardModeBtn.addEventListener('touchstart', handleHardModeBtn, { passive: false });
 
     function requestMobileFullscreen() {
         if (STATE.isMobile || ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
@@ -156,7 +154,6 @@ function setupInteractions() {
     };
     const skipCreditsBtn = document.getElementById('skip-credits-btn');
     skipCreditsBtn.addEventListener('click', handleSkipCreditsBtn);
-    skipCreditsBtn.addEventListener('touchstart', handleSkipCreditsBtn, { passive: false });
 
     const handleRebootBtn = (e) => {
         if (e) e.preventDefault();
@@ -164,7 +161,6 @@ function setupInteractions() {
     };
     const rebootBtn = document.getElementById('reboot-btn');
     rebootBtn.addEventListener('click', handleRebootBtn);
-    rebootBtn.addEventListener('touchstart', handleRebootBtn, { passive: false });
 
     // Warp Console Buttons
     const warpSubmit = document.getElementById('warp-submit-btn');
@@ -175,19 +171,6 @@ function setupInteractions() {
         toggleWarpConsole();
     });
     warpExit.addEventListener('click', (e) => {
-        e.preventDefault();
-        toggleWarpConsole(true);
-    });
-
-    // For mobile touch, we use touchstart but must prevent default if we don't want click to fire too.
-    // However, the existing mobile buttons in ui.js don't all preventDefault.
-    // To be safe and avoid double-firing, let's just use click as it's generally supported.
-    // If touch latency is an issue, we can add touchstart and preventDefault.
-    warpSubmit.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        toggleWarpConsole();
-    });
-    warpExit.addEventListener('touchstart', (e) => {
         e.preventDefault();
         toggleWarpConsole(true);
     });
